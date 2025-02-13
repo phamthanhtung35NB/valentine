@@ -350,3 +350,123 @@ gsap.set(".card", {
   rotateX: 0,
   transformPerspective: 1000,
 });
+function createCongratsFireworks() {
+  const canvas = document.getElementById('congratsCanvas');
+  const ctx = canvas.getContext('2d');
+  
+  // Set canvas size
+  function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  let fireworks = [];
+  let text = "❤️"; // Text để vẽ
+
+  function createTextFirework(x, y, color) {
+      const particles = [];
+      const fontSize = 20;
+      ctx.font = `${fontSize}px Arial`;
+      
+      // Tạo particles từ text
+      for(let i = 0; i < 50; i++) {
+          const angle = (Math.PI * 2 * i) / 50;
+          const velocity = 3 + Math.random() * 3;
+          particles.push({
+              x,
+              y,
+              vx: Math.cos(angle) * velocity,
+              vy: Math.sin(angle) * velocity,
+              text: text,
+              color,
+              alpha: 1,
+              size: fontSize
+          });
+      }
+      return particles;
+  }
+
+  function animate() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      fireworks.forEach((particles, fireworkIndex) => {
+          particles.forEach((particle, i) => {
+              particle.x += particle.vx;
+              particle.y += particle.vy;
+              particle.vy += 0.1;
+              particle.alpha -= 0.008;
+
+              ctx.save();
+              ctx.globalAlpha = particle.alpha;
+              ctx.fillStyle = `rgba(${particle.color}, ${particle.alpha})`;
+              ctx.font = `${particle.size}px Arial`;
+              ctx.fillText(particle.text, particle.x, particle.y);
+              ctx.restore();
+
+              if (particle.alpha <= 0) {
+                  particles.splice(i, 1);
+              }
+          });
+
+          if (particles.length === 0) {
+              fireworks.splice(fireworkIndex, 1);
+          }
+      });
+
+      requestAnimationFrame(animate);
+  }
+
+  const colors = [
+      '255, 0, 0',     // Red
+      '255, 192, 203', // Pink
+      '255, 20, 147',  // Deep pink
+      '255, 105, 180', // Hot pink
+      '255, 182, 193', // Light pink
+      '255, 127, 80'   // Coral
+  ];
+
+  function launchFireworks() {
+      const x = Math.random() * canvas.width;
+      const y = canvas.height / 2 + Math.random() * (canvas.height / 3);
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      fireworks.push(createTextFirework(x, y, color));
+  }
+
+  // Start animation
+  animate();
+
+  // Launch fireworks continuously
+  return setInterval(launchFireworks, 300);
+}
+
+// Sửa lại event listener của nút Yes
+yesButton.addEventListener('click', () => {
+  const tl = new gsap.timeline();
+  gsap.to(".valentine-text, .buttons", {
+      display: "none",
+      opacity: 0,
+      duration: 0.5,
+  });
+  gsap.to(".valentine-congrats", {
+      display: "block",
+      opacity: 1,
+      duration: 0.5,
+      delay: 0.5,
+      onComplete: () => {
+          const fireworksInterval = createCongratsFireworks();
+          // Tự động dừng pháo hoa sau 15 giây
+          setTimeout(() => {
+              clearInterval(fireworksInterval);
+          }, 15000);
+      }
+  });
+  tl.to(".card", {
+      width: window.innerWidth < 420 ? window.innerWidth : 800,
+      height: 540,
+      duration: 1,
+      ease: "power2.in",
+  });
+});

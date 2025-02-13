@@ -1,69 +1,394 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Tun Test</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div id="canvas-container"></div>
-    <div class="wrapper">
-      <div class="card">
-        <p class="text-intro"></p>
-        <div class="card-content">
-          <!-- <div class="heart"></div> -->
-          <div class="valentine-text" style="display: none">
-            <h1>Will you be my valentine?</h1>
-            <img
-              src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2Vna2FkeDN2NHYxenduMXVuNTJ0MmJxZjI5dG16bXhoaGJuZmoxMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26FLdmIp6wJr91JAI/giphy.gif"
-              alt="please"
-              class="please"
-            />
-          </div>
-          <div class="buttons" style="display: none">
-            <button class="yes">Yes</button>
-            <button class="no">No</button>
-          </div>
-          <div class="valentine-congrats" style="display: none">
-            <h1>Congratulations!</h1>
-            <p>You have a valentine now!</p>
-            <img
-              src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2EwcDRyYXZyNjUwb2h0ZmRnd3R3d2wzMWRvNGR0ejBnMjduaHprYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/n0IKF3qkeh671VAO45/giphy.gif"
-              alt="congrats"
-              class="congrats"
-            />
-          </div>
-          <div class="valentine-sad" style="display: none">
-            <h1>Whyyyyyyy!!!!!</h1>
-            <p>Life already has enough lemons.</p>
-            <img
-              src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbTF4aHN4Y2FqMnlvdGRwYnF6ZG5nZ2l3emRxeXNvcXlyemZkbDJjYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kyrd72DC2Iwfu/giphy.gif"
-              alt="sad"
-              class="sad"
-            />
-          </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Journey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            overflow: hidden;
+        }
+
+        .page {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        /* Login Page */
+        #loginPage {
+            background: url('https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?auto=format&fit=crop&q=80') center/cover;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            animation: float 3s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .login-container h2 {
+            color: #ff1493;
+            margin-bottom: 1rem;
+        }
+
+        .password-input {
+            padding: 0.8rem;
+            margin: 1rem 0;
+            border: 2px solid #ff69b4;
+            border-radius: 8px;
+            width: 200px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .login-btn {
+            background: #ff1493;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Fireworks Page */
+        #fireworksPage {
+            background: #000;
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(50);
+                opacity: 0;
+            }
+        }
+
+        /* Message Page */
+        #messagePage {
+            background: url('https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?auto=format&fit=crop&q=80') center/cover;
+        }
+
+        .message-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 600px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 1s forwards;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .continue-btn {
+            background: #ff1493;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .continue-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .error-message {
+            color: #ff0000;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="page active" id="loginPage">
+        <div class="login-container">
+            <h2>💖 Enter the Secret Code 💖</h2>
+            <p>Hint:  (DDMMYYYY)</p>
+            <input type="password" class="password-input" placeholder="Enter password">
+            <div class="error-message">Incorrect password. Try again! ❤️</div>
+            <button class="login-btn">Unlock My Heart</button>
         </div>
-        <div class="cord-wrapper">
-          <svg width="40" height="200" class="cord">
-            <path class="cord-path" d="M20,0 C20,50 20,150 20,200" />
-          </svg>
-          <svg class="plug" y="140" viewBox="0 0 100 160">
-            <path d="M30,0 L70,0 L90,40 L90,140 L10,140 L10,40 Z" />
-            <circle cx="35" cy="20" r="5" fill="white" />
-            <circle cx="65" cy="20" r="5" fill="white" />
-          </svg>
-          <div class="ribbon"></div>
-        </div>
-      </div>
-      <div class="footer-text">Made with ❤️ by Shrikant</div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Fireworks Page -->
+    <div class="page" id="fireworksPage">
+        <canvas id="fireworksCanvas"></canvas>
+    </div>
 
-    <script type="text/javascript" src="controller.js"></script>
-  </body>
+    <!-- Message Page -->
+    <div class="page" id="messagePage">
+        <div class="message-container">
+            <h2>❤️ My Dearest ❤️</h2>
+            <div class="message-text">
+                Every moment with you feels like a dream come true. Your smile brightens my darkest days, and your love makes my heart skip a beat. Today, I want to make this Valentine's Day as special as you are to me.
+            </div>
+            <button class="continue-btn">Continue the journey ➜</button>
+        </div>
+    </div>
+
+    <script>
+        // Password validation
+        const correctPassword = "";//ẩn rồi :))
+        const loginBtn = document.querySelector('.login-btn');
+        const passwordInput = document.querySelector('.password-input');
+        const errorMessage = document.querySelector('.error-message');
+
+        loginBtn.addEventListener('click', validatePassword);
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') validatePassword();
+        });
+
+        function validatePassword() {
+            if (passwordInput.value === correctPassword) {
+                document.getElementById('loginPage').style.opacity = 0;
+                setTimeout(() => {
+                    document.getElementById('loginPage').classList.remove('active');
+                    document.getElementById('fireworksPage').classList.add('active');
+                    startFireworks();
+                }, 500);
+            } else {
+                errorMessage.style.display = 'block';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+
+        // Fireworks animation
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        function createHeart(x, y, color) {
+    const particles = [];
+    const particleCount = 200;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const t = (i / particleCount) * (2 * Math.PI);
+        const x1 = 16 * Math.pow(Math.sin(t), 3);
+        const y1 = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+        
+        particles.push({
+            x,
+            y,
+            vx: x1 * 0.3,
+            vy: -y1 * 0.3,
+            color,
+            alpha: 1,
+            type: 'heart'
+        });
+    }
+    return particles;
+}
+function createFlower(x, y, color) {
+    const particles = [];
+    const petalCount = 8;
+    const particlesPerPetal = 15;
+    
+    for (let i = 0; i < petalCount; i++) {
+        const baseAngle = (i / petalCount) * Math.PI * 2;
+        
+        for (let j = 0; j < particlesPerPetal; j++) {
+            const spread = (j / particlesPerPetal) * Math.PI * 0.3;
+            const angle = baseAngle + spread - (Math.PI * 0.15);
+            const velocity = 2 + Math.random() * 3;
+            
+            particles.push({
+                x,
+                y,
+                vx: Math.cos(angle) * velocity,
+                vy: Math.sin(angle) * velocity,
+                color,
+                alpha: 1,
+                type: 'flower'
+            });
+        }
+    }
+    return particles;
+}
+
+function createClassicFirework(x, y, color) {
+    const particles = [];
+    const particleCount = 60;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const angle = (Math.PI * 2 * i) / particleCount;
+        const velocity = 3 + Math.random() * 3;
+        particles.push({
+            x,
+            y,
+            vx: Math.cos(angle) * velocity,
+            vy: Math.sin(angle) * velocity,
+            color,
+            alpha: 1,
+            type: 'classic'
+        });
+    }
+    return particles;
+}
+        let fireworks = [];
+        let fireworksTimeout;
+
+        function animate() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    fireworks.forEach((particles, fireworkIndex) => {
+        particles.forEach((particle, i) => {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+            
+            // Điều chỉnh trọng lực dựa trên loại pháo hoa
+            if (particle.type === 'classic') {
+                particle.vy += 0.1;
+            } else if (particle.type === 'heart') {
+                particle.vy += 0.05;
+            } else if (particle.type === 'flower') {
+                particle.vy += 0.08;
+            }
+            
+            particle.alpha -= 0.008;
+
+            // Vẽ hạt pháo hoa
+            ctx.beginPath();
+            
+            if (particle.type === 'heart') {
+                ctx.arc(particle.x, particle.y, 2.5, 0, Math.PI * 2);
+            } else if (particle.type === 'flower') {
+                ctx.arc(particle.x, particle.y, 2, 0, Math.PI * 2);
+            } else {
+                ctx.arc(particle.x, particle.y, 2, 0, Math.PI * 2);
+            }
+            
+            ctx.fillStyle = `rgba(${particle.color}, ${particle.alpha})`;
+            ctx.fill();
+
+            if (particle.alpha <= 0) {
+                particles.splice(i, 1);
+            }
+        });
+
+        if (particles.length === 0) {
+            fireworks.splice(fireworkIndex, 1);
+        }
+    });
+
+    requestAnimationFrame(animate);
+}
+
+function startFireworks() {
+    animate();
+    
+    const colors = [
+        '255, 0, 0',     // Red
+        '255, 192, 203', // Pink
+        '255, 20, 147',  // Deep pink
+        '255, 105, 180', // Hot pink
+        '255, 182, 193', // Light pink
+        '255, 127, 80'   // Coral
+    ];
+
+    let count = 0;
+    const interval = setInterval(() => {
+        const x = Math.random() * canvas.width;
+        const y = canvas.height / 4 + Math.random() * (canvas.height / 3);
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        // Random chọn loại pháo hoa
+        const type = Math.random();
+        if (type < 0.33) {
+            fireworks.push(createHeart(x, y, color));
+        } else if (type < 0.66) {
+            fireworks.push(createFlower(x, y, color));
+        } else {
+            fireworks.push(createClassicFirework(x, y, color));
+        }
+        
+        // Tạo pháo hoa phụ
+        if (Math.random() < 0.5) {
+            setTimeout(() => {
+                const subX = x + (Math.random() - 0.5) * 100;
+                const subY = y + (Math.random() - 0.5) * 20;
+                fireworks.push(createClassicFirework(subX, subY, color));
+            }, 200);
+        }
+        
+        count++;
+        if (count >= 50) { // Tăng số lượng pháo hoa
+            clearInterval(interval);
+            fireworksTimeout = setTimeout(showMessage, 8000); // Tăng thời gian hiển thị
+        }
+    }, 350); // Giảm thời gian giữa các pháo hoa
+}
+        function showMessage() {
+            document.getElementById('fireworksPage').style.opacity = 0;
+            setTimeout(() => {
+                document.getElementById('fireworksPage').classList.remove('active');
+                document.getElementById('messagePage').classList.add('active');
+            }, 500);
+        }
+
+        // Continue to final page
+        document.querySelector('.continue-btn').addEventListener('click', () => {
+            window.location.href = 'valentine.html'; // Your existing Valentine page
+        });
+    </script>
+</body>
 </html>
